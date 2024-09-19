@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente de Saúde Virtual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #e1f5e5, #c8e6c9);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #388e3c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-bottom: 5px solid #2e7d32;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        nav {
+            margin: 15px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.3s;
+        }
+        nav a:hover {
+            color: #a5d6a7;
+            transform: scale(1.1);
+        }
+        .descricao {
+            max-width: 800px;
+            margin: 100px auto 20px; 
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .search {
+            margin: 20px auto;
+            max-width: 600px;
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            font-size: 1em;
+            transition: box-shadow 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 5px #388e3c, 0 0 10px #388e3c;
+        }
+        button {
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 0 10px 10px 0;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        .resultado strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #388e3c;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #388e3c;
+            color: white;
+            position: relative;
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        .contato {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .dicas {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .dicas h3 {
+            margin-top: 0;
+        }
+        .dicas ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .dicas li {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .dicas i {
+            margin-right: 10px;
+            color: #388e3c;
+        }
+        @media (max-width: 600px) {
+            header, .descricao, .search, .resultado, .dicas {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            button {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Agente de Saúde Virtual</h1>
+        <nav>
+            <a href="#faq">FAQ</a>
+            <a href="#recursos">Recursos</a>
+            <a href="#dicas">Dicas de Saúde</a>
+            <a href="#contato">Contato</a>
+        </nav>
+        <h2>Pesquise sobre doenças</h2>
+    </header>
+
+    <main>
+        <div class="descricao">
+            <p>Olá! Eu sou Baymax, seu agente virtual de saúde. 💚🤍</p>
+            <p>Estou aqui para ajudar a responder perguntas gerais sobre saúde. No entanto, lembre-se de que não substituo o diagnóstico ou orientação de um médico.</p>
+            <p>Como posso ajudá-lo hoje?</p>
+        </div>
+
+        <section class="search">
+            <input type="text" id="pergunta" placeholder="Digite sua pergunta..." onkeydown="verificarEnter(event)">
+            <button onclick="pesquisar()"><i class="fas fa-search"></i> Pesquisar</button>
+        </section>
+
+        <div id="resultado" class="resultado"></div>
+
+        <div class="dicas" id="dicas">
+            <h3>Dicas de Saúde</h3>
+            <ul>
+                <li><i class="fas fa-apple-alt"></i> Mantenha uma dieta equilibrada rica em frutas e vegetais.</li>
+                <li><i class="fas fa-walking"></i> Pratique atividades físicas regularmente.</li>
+                <li><i class="fas fa-water"></i> Beba bastante água ao longo do dia.</li>
+                <li><i class="fas fa-bed"></i> Priorize um bom sono, descansando pelo menos 7 horas por noite.</li>
+                <li><i class="fas fa-stethoscope"></i> Realize check-ups médicos regularmente.</li>
+            </ul>
+        </div>
+
+        <div class="faq" id="faq">
+            <h3>Perguntas Frequentes (FAQ)</h3>
+            <p><strong>1. O que é diabetes?</strong></p>
+            <p>Diabetes é uma condição crônica onde o corpo não regula o açúcar no sangue adequadamente.</p>
+            <p><strong>2. Como posso prevenir doenças?</strong></p>
+            <p>Manter uma dieta equilibrada, praticar exercícios físicos e realizar check-ups regulares.</p>
+            <p><strong>3. Quando devo procurar um médico?</strong></p>
+            <p>Se você tiver sintomas persistentes, dor intensa ou qualquer outra preocupação com a saúde.</p>
+        </div>
+
+        <div class="recursos" id="recursos">
+            <h3>Recursos Úteis</h3>
+            <p>• <a href="https://www.who.int" target="_blank">Organização Mundial da Saúde</a></p>
+            <p>• <a href="https://www.cdc.gov" target="_blank">Centros de Controle e Prevenção de Doenças</a></p>
+            <p>• <a href="https://www.ministeriodasaude.gov.br" target="_blank">Ministério da Saúde</a></p>
+        </div>
+    </main>
+
+    <footer id="contato">
+        <p>&copy; 2024 Agente de Saúde Virtual. Todos os direitos reservados.</p>
+        <div class="contato">
+            <p>Contato: (51) 99079-5166</p>
+            <p>Email: <a href="mailto:agentevirtualdasaude@gmail.com" style="color: white;">agentevirtualdasaude@gmail.com</a></p>
+        </div>
+    </footer>
+
+    <script>
+        const respostas = {
+            "diabetes": "Diabetes é uma condição crônica onde o corpo não regula o açúcar no sangue adequadamente.",
+            "hipertensao": "Hipertensão é a pressão arterial elevada, que pode levar a complicações cardíacas.",
+            "obesidade": "Obesidade é o acúmulo excessivo de gordura corporal que pode afetar a saúde.",
+            "diabetes tipo 1": "Diabetes tipo 1 é uma condição em que o corpo não produz insulina.",
+            "diabetes tipo 2": "Diabetes tipo 2 é uma condição em que o corpo não utiliza a insulina de forma eficaz.",
+            "avc": "AVC (Acidente Vascular Cerebral) ocorre quando o fluxo de sangue para o cérebro é interrompido.",
+            "infarto": "Infarto é a morte de uma parte do coração devido à falta de fluxo sanguíneo.",
+            "gastrite": "Gastrite é a inflamação do revestimento do estômago.",
+            "colite": "Colite é a inflamação do cólon, que pode causar dor abdominal e diarreia.",
+            "doença de crohn": "Doença de Crohn é uma condição inflamatória do trato digestivo.",
+            "síndrome do intestino irritável": "Síndrome do intestino irritável é um distúrbio gastrointestinal crônico.",
+            "síndrome de down": "Síndrome de Down é uma condição genética causada pela presença de um cromossomo extra.",
+            "esclerose múltipla": "Esclerose múltipla é uma doença autoimune que afeta o sistema nervoso central.",
+            "epilepsia": "Epilepsia é um transtorno neurológico caracterizado por convulsões recorrentes.",
+            "ansiedade": "Transtornos de ansiedade são condições que causam preocupação excessiva e medo.",
+            "transtorno do pânico": "Transtorno do pânico é uma condição de saúde mental caracterizada por ataques de pânico.",
+            "toc": "TOC (Transtorno Obsessivo-Compulsivo) é um transtorno de ansiedade caracterizado por pensamentos obsessivos.",
+            "síndrome de asperger": "Síndrome de Asperger é uma condição do espectro autista que afeta a comunicação.",
+            "fobia social": "Fobia social é um transtorno de ansiedade que causa medo intenso em situações sociais.",
+            "alergia": "Alergias são reações do sistema imunológico a substâncias estranhas.",
+            "psoríase": "Psoríase é uma doença autoimune que causa o crescimento rápido de células da pele.",
+            "lúpus": "Lúpus é uma doença autoimune que pode afetar múltiplos sistemas do corpo.",
+            "hepatite b": "Hepatite B é uma infecção viral que afeta o fígado.",
+            "hepatite c": "Hepatite C é uma infecção viral que também afeta o fígado.",
+            "tuberculose": "Tuberculose é uma infecção bacteriana que afeta principalmente os pulmões.",
+            "sífilis": "Sífilis é uma infecção sexualmente transmissível causada pela bactéria Treponema pallidum.",
+            "gonorreia": "Gonorreia é uma infecção sexualmente transmissível causada pela bactéria Neisseria gonorrhoeae.",
+            "candidíase": "Candidíase é uma infecção causada pelo crescimento excessivo do fungo Candida.",
+            "doença celíaca": "Doença celíaca é uma condição autoimune que afeta a digestão de glúten.",
+            "apneia do sono": "Apneia do sono é uma condição em que a respiração para e volta durante o sono.",
+            "distúrbio do sono": "Distúrbios do sono são condições que afetam a qualidade do sono.",
+            "hiperatividade": "Hiperatividade é um estado de inquietação e agitação excessiva.",
+            "desidratação": "Desidratação é a perda excessiva de líquidos do corpo.",
+            "intoxicação alimentar": "Intoxicação alimentar é uma doença causada pela ingestão de alimentos contaminados.",
+            "gripe": "Gripe é uma infecção viral que afeta o sistema respiratório.",
+            "resfriado": "Resfriado é uma infecção viral leve que afeta o trato respiratório superior.",
+            "infecção urinária": "Infecção urinária é uma infecção que afeta o trato urinário.",
+            "dor lombar": "Dor lombar é um tipo de dor na região inferior das costas.",
+            "tendinite": "Tendinite é a inflamação de um tendão, causando dor e desconforto.",
+            "trombose": "Trombose é a formação de um coágulo sanguíneo dentro de um vaso sanguíneo.",
+        };
+
+        function pesquisar() {
+            const pergunta = document.getElementById("pergunta").value.toLowerCase();
+            const resultado = document.getElementById("resultado");
+            const respostaEncontrada = Object.keys(respostas).find(key => pergunta.includes(key));
+            
+            if (respostaEncontrada) {
+                resultado.innerHTML = `<strong>${respostaEncontrada.charAt(0).toUpperCase() + respostaEncontrada.slice(1)}</strong>: ${respostas[respostaEncontrada]}`;
+                resultado.style.display = "block";
+            } else {
+                resultado.innerHTML = "Desculpe, não encontrei uma resposta para sua pergunta.";
+                resultado.style.display = "block";
+            }
+        }
+
+        function verificarEnter(event) {
+            if (event.key === "Enter") {
+                pesquisar();
+            }
+        }
+    </script>
+
+</body>
+</html>
